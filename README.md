@@ -34,7 +34,7 @@ python -m folktexts.cli.launch_experiments_htcondor --executable-path ./folktext
 # 10-shot
 python -m folktexts.cli.launch_experiments_htcondor --executable-path ./folktexts/cli/run_benchmark.py --results-dir '<path/to/results/folder/>' --task=ACSIncome --models-dir '<path/to/models/>' --model=google/gemma-2b --fit-threshold=2000 --reuse-few-shot-examples=True --few-shot=10 --balance-few-shot-examples=True --variation="format=bullet;connector=is;granularity=original;order=AGEP,COW,SCHL,MAR,OCCP,POBP,RELP,WKHP,SEX,RAC1P"
 ```
-See https://anonymous.4open.science/r/folktexts-custom-DCC8/README.md for further options. For example, use `--dryrun` to check which jobs will be started without actually starting them.
+See [here](https://github.com/milagorecki/tableshift-custom) for further options. For example, use `--dryrun` to check which jobs will be started without actually starting them.
 
 
 When not on an htcondor cluster, you can run the benchmarks locally using the `run_benchmark.py` script:
@@ -43,13 +43,13 @@ python -m folktexts.cli.run_benchmark --model google/gemma-2b --results-dir './r
 ```
 
 ## Baseline Predictions
-From inside the monoculture package, run
+From inside the mono_multi package, run
 ```
-python -m  monoculture.baseline.run_acs_benchmark_baseline --model Constant --results-dir '<path/to/results/folder/>' --data-dir '../folktexts-adapted/data/' --task <task>
+python -m  mono_multi.baseline.run_acs_benchmark_baseline --model Constant --results-dir '<path/to/results/folder/>' --data-dir '../folktexts-adapted/data/' --task <task>
 ```
 
 
-## Analysis model prediction for monoculture and multiplicity 
+## Analyze model predictions for monoculture and multiplicity 
 - All metrics are collected in `metrics.py`.
 - For plotting, follow the respective notebook provided. 
 
