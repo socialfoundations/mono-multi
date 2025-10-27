@@ -1,0 +1,108 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mono_multi"
+description = "Analyze model prediction for algorithmic monoculture and model multiplicity"
+readme="README.md"
+authors = [
+    { name = "Mila Gorecki" },
+]
+dynamic = ["version", "dependencies", "optional-dependencies",]
+requires-python = ">=3.8"
+keywords = ["language-model", "monoculture", "multiplicity",  "machine-learning"]
+
+
+[tool.setuptools.packages.find]
+where = ["."]  # list of folders that contain the packages (["."] by default)
+include = ["mono_multi"]
+exclude = ["tests*", "docs*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "mono_multi.__version__"}
+
+dependencies = {file = "requirements/main.txt"}
+
+# Optional dependencies
+optional-dependencies.tests = {file = "requirements/tests.txt"}
+optional-dependencies.docs = {file = "requirements/docs.txt"}
+optional-dependencies.cluster = {file = "requirements/cluster.txt"}
+
+
+# flake8
+[tool.flake8]
+max-complexity = 10
+max-line-length = 127
+
+per-file-ignores = """
+# imported but unused
+__init__.py: F401
+"""
+
+exclude = [
+    "docs/",
+    ".tox/"
+]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = [
+    "tests",
+]
+
+# isort
+[tool.isort]
+profile = "hug"
+force_single_line = false
+src_paths = ["folktexts", "tests"]
+
+# Coverage
+[tool.coverage.run]
+branch = true
+source = ["mono_multi"]
+omit = ["tests"]
+
+[tool.coverage.report]
+show_missing = true
+
+# MyPy
+[tool.mypy]
+ignore_missing_imports = true
+no_implicit_optional = false
+exclude = ["build", "doc"]
+
+# Tox
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+env_list =
+    py38
+    py39
+    py310
+    py311
+    py312
+    lint
+    type
+
+[testenv]
+description = run unit tests
+deps =
+    pytest>=8
+commands = python -m pytest {posargs:tests}
+
+[testenv:lint]
+description = run linters
+skip_install = true
+deps =
+    flake8>=7.0
+    flake8-pyproject
+commands = flake8 {posargs:mono_multi tests}
+
+[testenv:type]
+description = run type checks
+deps =
+    mypy>=1.9
+commands =
+    mypy {posargs:mono_multi tests}
+"""
